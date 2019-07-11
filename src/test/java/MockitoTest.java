@@ -1,27 +1,20 @@
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MockitoTest {
-
-	@Rule
-	public MockitoRule mockitoRule = MockitoJUnit.rule();
 
 	@Mock
 	private TestClass testClassMock;
 
+	@InjectMocks
 	private TestClassDelegate classUnderTest;
-
-	@Before
-	public void before() {
-		classUnderTest = new TestClassDelegate(testClassMock);
-	}
 
 	@Test
 	public final void test1() {
@@ -47,34 +40,6 @@ public class MockitoTest {
 		assertThat(classUnderTest.delegateToDoSomething()).isEqualTo("mock"); // 4.2
 	}
 
-	/**
-	 * Class that uses a dependency and delegates some calls to methods in the dependency.
-	 */
-	public static class TestClassDelegate {
 
-		private final TestClass testClass;
 
-		public TestClassDelegate(final TestClass testClass) {
-			this.testClass = testClass;
-		}
-
-		public String delegateToDoSomething() {
-			return testClass.doSomething();
-		}
-
-		public String doSomethingDirectly() {
-			return "doSomethingDirectly";
-		}
-	}
-
-	/**
-	 * Dependency that is mocked.
-	 */
-	public static class TestClass {
-
-		public String doSomething() {
-			return "doSomething";
-		}
-
-	}
 }
